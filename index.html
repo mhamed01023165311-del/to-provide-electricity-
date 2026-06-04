@@ -1,12 +1,36 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>VoltSync Smart System</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
-  </body>
+<head>
+    <meta charset="UTF-8">
+    <title>كاشف الفشل</title>
+    <style>
+        body { font-family: sans-serif; padding: 20px; background: #000; color: #fff; }
+        .error { color: #ff0000; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <h1>بفحص الموقع...</h1>
+    <div id="log"></div>
+
+    <script>
+        const log = (msg) => document.getElementById('log').innerHTML += `<p>${msg}</p>`;
+        
+        // 1. مراقبة أي خطأ جافا سكريبت
+        window.onerror = (msg, url, line) => {
+            log(`<span class="error">خطأ في JS: ${msg} في ${url} سطر ${line}</span>`);
+        };
+
+        // 2. مراقبة أي ملف مش لاقيينه (404)
+        window.addEventListener('error', (e) => {
+            if (e.target.tagName === 'SCRIPT' || e.target.tagName === 'LINK') {
+                log(`<span class="error">فشل تحميل ملف: ${e.target.src || e.target.href}</span>`);
+            }
+        }, true);
+
+        // 3. تجربة نداء ملف الـ main.tsx
+        fetch('/src/main.tsx')
+            .then(res => log(`حالة ملف main.tsx: ${res.status === 200 ? 'موجود' : 'غير موجود (الحالة: ' + res.status + ')'}`))
+            .catch(err => log('فشل الوصول للملف نهائياً'));
+    </script>
+</body>
 </html>
