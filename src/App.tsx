@@ -1,4 +1,3 @@
-// src/App.tsx
 import React, { useState } from 'react';
 import DeltaEntryEngine from './components/DeltaEntryEngine';
 import { ServiceType, MeterAccount } from './types';
@@ -30,8 +29,9 @@ export default function App() {
     setAccount(updated);
   };
 
+  // التعديل هنا: تم إصلاح الدمج النصي بطريقة آمنة ومضمونة 100% بدون أي Crash
   const handleAwardPoints = (points: number, message: string) => {
-    alert(`🎉 نظام النقاط: كسبت +{points} نقطة!\n${message}`);
+    alert("🎉 نظام النقاط: كسبت +" + points + " نقطة!\n" + message);
   };
 
   const handleAddHistoryRecord = (month: string, cost: number, volume: number, isWater: boolean, tierName?: string) => {
