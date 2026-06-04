@@ -2,35 +2,30 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <title>كاشف الفشل</title>
-    <style>
-        body { font-family: sans-serif; padding: 20px; background: #000; color: #fff; }
-        .error { color: #ff0000; font-weight: bold; }
-    </style>
+    <title>VoltSync - المترجم المباشر</title>
+    <!-- 1. استدعاء المترجم (Babel) عشان يترجم لغة الـ React اللي مش فاهمها المتصفح -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <!-- 2. استدعاء المكونات الأساسية للـ React -->
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body>
-    <h1>بفحص الموقع...</h1>
-    <div id="log"></div>
+    <div id="root"></div>
 
-    <script>
-        const log = (msg) => document.getElementById('log').innerHTML += `<p>${msg}</p>`;
-        
-        // 1. مراقبة أي خطأ جافا سكريبت
-        window.onerror = (msg, url, line) => {
-            log(`<span class="error">خطأ في JS: ${msg} في ${url} سطر ${line}</span>`);
-        };
+    <!-- 3. هنا بقى "لغة المترجم": أي كود هتكتبه جوه الـ type="text/babel" هيتحول للغة المتصفح -->
+    <script type="text/babel">
+        // هنا هتحط كود الـ App.tsx بتاعك بالكامل
+        function App() {
+            return (
+                <div className="p-8 text-center text-xl font-bold bg-white shadow-lg rounded-2xl">
+                    تم الترجمة بنجاح! الموقع دلوقتي بيفهم لغتك.
+                </div>
+            );
+        }
 
-        // 2. مراقبة أي ملف مش لاقيينه (404)
-        window.addEventListener('error', (e) => {
-            if (e.target.tagName === 'SCRIPT' || e.target.tagName === 'LINK') {
-                log(`<span class="error">فشل تحميل ملف: ${e.target.src || e.target.href}</span>`);
-            }
-        }, true);
-
-        // 3. تجربة نداء ملف الـ main.tsx
-        fetch('/src/main.tsx')
-            .then(res => log(`حالة ملف main.tsx: ${res.status === 200 ? 'موجود' : 'غير موجود (الحالة: ' + res.status + ')'}`))
-            .catch(err => log('فشل الوصول للملف نهائياً'));
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
     </script>
 </body>
 </html>
